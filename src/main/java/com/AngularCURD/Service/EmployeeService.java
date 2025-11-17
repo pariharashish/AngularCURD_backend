@@ -1,9 +1,9 @@
 
 package com.AngularCURD.Service;
 
-
 import com.AngularCURD.Entity.Employee;
 import com.AngularCURD.Repository.EmployeeRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -23,13 +23,19 @@ public class EmployeeService {
 
     public Employee update(Long id, Employee newEmp) {
         Employee emp = repo.findById(id).orElseThrow();
-        emp.setName(newEmp.getName());
-        emp.setEmail(newEmp.getEmail());
-        emp.setDepartment(newEmp.getDepartment());
+        if (newEmp.getName() != null) emp.setName(newEmp.getName());
+        if (newEmp.getEmail() != null) emp.setEmail(newEmp.getEmail());
+        if (newEmp.getDepartment() != null) emp.setDepartment(newEmp.getDepartment());
+        if (newEmp.getGender() != null) emp.setGender(newEmp.getGender());
         return repo.save(emp);
     }
 
-    public void delete(Long id) {
+    public ResponseEntity<String> delete(Long id) {
+        if (!repo.existsById(id)) {
+            return ResponseEntity.ok("Employee with ID " + id + " not found.");
+        }
         repo.deleteById(id);
+        return ResponseEntity.ok("Employee with ID " + id + " has been deleted successfully.");
+
     }
 }

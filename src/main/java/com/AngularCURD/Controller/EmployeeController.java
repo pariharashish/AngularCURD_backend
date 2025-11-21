@@ -1,5 +1,6 @@
 package com.AngularCURD.Controller;
 
+import com.AngularCURD.DTO.EmployeeRequest;
 import com.AngularCURD.Entity.Employee;
 import com.AngularCURD.Service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +26,10 @@ public class EmployeeController {
     public Employee getById(@PathVariable Long id) { return service.getById(id); }
 
     @PostMapping
-    public Employee create(@RequestBody Employee e) { return service.create(e); }
+    public Employee create(@RequestBody EmployeeRequest e) { return service.create(e); }
 
     @PatchMapping("/{id}")
-    public Employee update(@PathVariable Long id, @RequestBody Employee e) {
+    public Employee update(@PathVariable Long id, @RequestBody EmployeeRequest e) {
         return service.update(id,e); //
         }
 

@@ -1,7 +1,12 @@
 
 package com.AngularCURD.Service;
 
+import com.AngularCURD.DTO.EmployeeRequest;
+import com.AngularCURD.Entity.Department;
+import com.AngularCURD.Entity.DepartmentType;
 import com.AngularCURD.Entity.Employee;
+import com.AngularCURD.Repository.DepartmentRepository;
+import com.AngularCURD.Repository.DepartmentTypeRepository;
 import com.AngularCURD.Repository.EmployeeRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,23 +15,80 @@ import java.util.List;
 @Service
 public class EmployeeService {
     private final EmployeeRepository repo;
+    private final DepartmentRepository departmentRepository;
+    private final DepartmentTypeRepository departmentTypeRepository;
 
-    public EmployeeService(EmployeeRepository repo) {
+
+    public EmployeeService(EmployeeRepository repo, DepartmentRepository departmentRepository, DepartmentTypeRepository departmentTypeRepository) {
         this.repo = repo;
+        this.departmentRepository = departmentRepository;
+        this.departmentTypeRepository = departmentTypeRepository;
     }
 
     public List<Employee> getAll() { return repo.findAll(); }
 
     public Employee getById(Long id) { return repo.findById(id).orElse(null); }
 
-    public Employee create(Employee employee) { return repo.save(employee); }
+    public Employee create(EmployeeRequest request) {
+        Employee emp = new Employee();
+        // 1. Check if department exists
+        Department deptId = departmentRepository.findByDeptName(request.getDepartment())
+                .orElseThrow(() -> new RuntimeException("Department not found: " + request.getDepartment()));
 
-    public Employee update(Long id, Employee newEmp) {
-        Employee emp = repo.findById(id).orElseThrow();
+        // 2️⃣ Validate DepartmentType exists under this Department
+
+        if (request.getDeptType() != null && !request.getDeptType().isEmpty()) {
+         departmentTypeRepository
+                    .findByTypeNameAndDepartment_DeptName(request.getDeptType(), request.getDepartment())
+                    .orElseThrow(() -> new RuntimeException(
+                                    "Department type " + request.getDeptType() +
+                                            " not found under department " + request.getDepartment() ));
+
+        }
+        DepartmentType deptType =  departmentTypeRepository.findByTypeName(request.getDeptType());
+
+        emp.setName(request.getName());
+        emp.setEmail(request.getEmail());
+        emp.setGender(request.getGender());
+        emp.setDepartment(request.getDepartment());
+        emp.setDeptType(deptType);
+        emp.setDepartmentId(deptId); // set FK
+        return repo.save(emp);
+    }
+
+    public Employee update(Long id, EmployeeRequest newEmp) {
+        Employee emp = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        // Update employee basic details
         if (newEmp.getName() != null) emp.setName(newEmp.getName());
         if (newEmp.getEmail() != null) emp.setEmail(newEmp.getEmail());
-        if (newEmp.getDepartment() != null) emp.setDepartment(newEmp.getDepartment());
         if (newEmp.getGender() != null) emp.setGender(newEmp.getGender());
+
+
+        // Update Department if provided
+        if (newEmp.getDepartment() != null) {
+            Department dept = departmentRepository
+                    .findByDeptName(newEmp.getDepartment())
+                    .orElseThrow(() ->
+                            new RuntimeException("Department not found: " + newEmp.getDepartment()));
+            emp.setDepartment(newEmp.getDepartment());
+            emp.setDepartmentId(dept);
+        }
+
+        // Update Department Type if provided
+        if (newEmp.getDeptType() != null) {
+            departmentTypeRepository
+                    .findByTypeNameAndDepartment_DeptName(newEmp.getDeptType(), newEmp.getDepartment())
+                    .orElseThrow(() -> new RuntimeException(
+                            "Department type " + newEmp.getDeptType() +
+                                    " not found under department " + newEmp.getDepartment() ));
+            DepartmentType deptType = departmentTypeRepository
+                    .findByTypeName(newEmp.getDeptType());
+
+            emp.setDeptType(deptType);
+        }
+
         return repo.save(emp);
     }
 

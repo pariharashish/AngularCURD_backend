@@ -1,8 +1,12 @@
-// Employee.java
 package com.AngularCURD.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Optional;
 
 @Entity
 @Data
@@ -14,6 +18,17 @@ public class Employee {
     private Long id;
     private String name;
     private String email;
-    private String department;
     private String gender;
+    private String department;
+
+    @ManyToOne
+    @JoinColumn(name = "dept_id")
+    @JsonIgnore
+    private Department departmentId;
+
+    @ManyToOne
+    @JoinColumn(name = "dept_type_id")
+    @JsonIgnore
+    private DepartmentType deptType;
+
 }

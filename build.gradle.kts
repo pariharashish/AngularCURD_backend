@@ -33,6 +33,7 @@ dependencies {
 	implementation("org.springframework.kafka:spring-kafka")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

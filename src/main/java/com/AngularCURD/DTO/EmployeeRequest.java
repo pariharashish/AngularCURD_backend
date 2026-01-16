@@ -9,4 +9,9 @@ public class EmployeeRequest {
     private String gender;
     private String department;
     private String deptType;
+    /*private Long salary;
+    private  String empContactNo;
+    private String empId;
+    private String address;*/
+
 }

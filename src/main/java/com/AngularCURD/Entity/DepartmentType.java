@@ -1,5 +1,6 @@
 package com.AngularCURD.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,8 +19,13 @@ public class DepartmentType {
 
     private String typeName;   // Example: Admin, Support, Technical
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "dept_id")
     @JsonIgnore  // Break the JSON recursion using Jackson Annotations (remove multiple repeats)
+    private Department department;*/
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dept_id")
+    @JsonBackReference // This corresponds to @JsonManagedReference in Department
     private Department department;
 }

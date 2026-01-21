@@ -3,6 +3,8 @@ package com.AngularCURD.Controller;
 import com.AngularCURD.DTO.EmployeeRequest;
 import com.AngularCURD.Entity.Employee;
 import com.AngularCURD.Service.EmployeeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200") // allow Angular
 @RestController
 @RequestMapping("/api/employees")
+@Tag(name = "Employee Management", description = "Operations related to user management")
 public class EmployeeController {
 
     private final EmployeeService service;
@@ -20,6 +23,9 @@ public class EmployeeController {
     }
 
     @GetMapping
+    @Operation(
+            summary = "Get All Employee details",
+            description = "Retrieves a  All Employee details")
     public List<Employee> getAll() { return service.getAll(); }
 
     @GetMapping("/{id}")

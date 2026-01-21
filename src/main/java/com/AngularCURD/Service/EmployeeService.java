@@ -11,6 +11,7 @@ import com.AngularCURD.Repository.EmployeeRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -36,16 +37,16 @@ public class EmployeeService {
                 .orElseThrow(() -> new RuntimeException("Department not found: " + request.getDepartment()));
 
         // 2️⃣ Validate DepartmentType exists under this Department
-
+        DepartmentType deptType = null;
         if (request.getDeptType() != null && !request.getDeptType().isEmpty()) {
-         departmentTypeRepository
+            deptType = departmentTypeRepository
                     .findByTypeNameAndDepartment_DeptName(request.getDeptType(), request.getDepartment())
                     .orElseThrow(() -> new RuntimeException(
                                     "Department type " + request.getDeptType() +
                                             " not found under department " + request.getDepartment() ));
 
         }
-        DepartmentType deptType =  departmentTypeRepository.findByTypeName(request.getDeptType());
+        //DepartmentType deptType =  departmentTypeRepository.findByTypeName(request.getDeptType());
 
         emp.setName(request.getName());
         emp.setEmail(request.getEmail());

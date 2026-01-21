@@ -10,5 +10,5 @@ public interface DepartmentTypeRepository extends JpaRepository<DepartmentType, 
     Optional<DepartmentType> findByTypeNameAndDepartment_DeptName(
             String typeName, String dept_name
     );
-    DepartmentType findByTypeName(String typeName);
+   DepartmentType findByTypeName(String typeName);
 }

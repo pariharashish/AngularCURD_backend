@@ -7,8 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /*@EnableDiscoveryClient*/
 public class AngularCurdBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AngularCurdBackendApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AngularCurdBackendApplication.class, args);
+    }
+
+
 
 }

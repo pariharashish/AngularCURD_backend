@@ -17,14 +17,14 @@ public class DepartmentController {
         this.service = service;}
 
     @GetMapping
-    public List<Department> getAllDepartmentList() {return service.getAll();}
+    public List<Department> getAllDepartmentList() {return service.getAllDepartments();}
 
     @PostMapping
     public Department createDepartment(@RequestBody DepartmentRequest d) { return service.createDepartment(d); }
 
     @PatchMapping("/{id}")
     public Department updateDepartment(@PathVariable Long id, @RequestBody Department d) {
-        return service.update(id,d); //
+        return service.updateDepartmentById(id,d); //
     }
 
 }

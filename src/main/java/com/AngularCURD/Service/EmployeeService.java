@@ -10,8 +10,8 @@ import com.AngularCURD.Repository.DepartmentTypeRepository;
 import com.AngularCURD.Repository.EmployeeRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -26,11 +26,11 @@ public class EmployeeService {
         this.departmentTypeRepository = departmentTypeRepository;
     }
 
-    public List<Employee> getAll() { return repo.findAll(); }
+    public List<Employee> getAllEmployees() { return repo.findAll(); }
 
-    public Employee getById(Long id) { return repo.findById(id).orElse(null); }
+    public Employee getEmployeeById(Long id) { return repo.findById(id).orElse(null); }
 
-    public Employee create(EmployeeRequest request) {
+    public Employee createEmployee(EmployeeRequest request) {
         Employee emp = new Employee();
         // 1. Check if department exists
         Department deptId = departmentRepository.findByDeptName(request.getDepartment())
@@ -46,7 +46,6 @@ public class EmployeeService {
                                             " not found under department " + request.getDepartment() ));
 
         }
-        //DepartmentType deptType =  departmentTypeRepository.findByTypeName(request.getDeptType());
 
         emp.setName(request.getName());
         emp.setEmail(request.getEmail());
@@ -57,7 +56,7 @@ public class EmployeeService {
         return repo.save(emp);
     }
 
-    public Employee update(Long id, EmployeeRequest newEmp) {
+    public Employee updateEmployeeById(Long id, EmployeeRequest newEmp) {
         Employee emp = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 

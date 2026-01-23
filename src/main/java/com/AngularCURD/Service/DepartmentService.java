@@ -5,10 +5,8 @@ import com.AngularCURD.Entity.Department;
 import com.AngularCURD.Entity.DepartmentType;
 import com.AngularCURD.Repository.DepartmentRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class DepartmentService {
@@ -19,7 +17,7 @@ public class DepartmentService {
         this.departmentRepository = repo;
     }
 
-    public List<Department> getAll() { return departmentRepository.findAll(); }
+    public List<Department> getAllDepartments() { return departmentRepository.findAll(); }
 
     public Department createDepartment(DepartmentRequest request) {
         Department dept = new Department();
@@ -44,7 +42,7 @@ public class DepartmentService {
 
 
 
-    public Department update(Long id, Department newDept) {
+    public Department updateDepartmentById(Long id, Department newDept) {
         Department dpt = departmentRepository.findById(id).orElseThrow();
         if (newDept.getDeptName() != null) dpt.setDeptName(newDept.getDeptName());
         if (newDept.getDeptTypes() != null) dpt.setDeptTypes(newDept.getDeptTypes());

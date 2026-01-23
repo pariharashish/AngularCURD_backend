@@ -5,6 +5,7 @@ import com.AngularCURD.Entity.Employee;
 import com.AngularCURD.Service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,21 +27,21 @@ public class EmployeeController {
     @Operation(
             summary = "Get All Employee details",
             description = "Retrieves a  All Employee details")
-    public List<Employee> getAll() { return service.getAll(); }
+    public List<Employee> getAll() { return service.getAllEmployees(); }
 
     @GetMapping("/{id}")
-    public Employee getById(@PathVariable Long id) { return service.getById(id); }
+    public Employee getById(@Valid @PathVariable Long id) { return service.getEmployeeById(id); }
 
     @PostMapping
-    public Employee create(@RequestBody EmployeeRequest e) { return service.create(e); }
+    public Employee create(@Valid @RequestBody EmployeeRequest e) { return service.createEmployee(e); }
 
     @PatchMapping("/{id}")
-    public Employee update(@PathVariable Long id, @RequestBody EmployeeRequest e) {
-        return service.update(id,e); //
+    public Employee update(@Valid @PathVariable Long id, @RequestBody EmployeeRequest e) {
+        return service.updateEmployeeById(id,e); //
         }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@Valid @PathVariable Long id) {
         service.delete(id);
     }
 }

@@ -1,6 +1,6 @@
-package com.AngularCURD.Repository;
+package com.AngularCURD.repository;
 
-import com.AngularCURD.Entity.DepartmentType;
+import com.AngularCURD.entity.DepartmentType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

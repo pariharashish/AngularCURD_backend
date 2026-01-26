@@ -1,8 +1,8 @@
-package com.AngularCURD.Controller;
+package com.AngularCURD.controller;
 
-import com.AngularCURD.DTO.EmployeeRequest;
-import com.AngularCURD.Entity.Employee;
-import com.AngularCURD.Service.EmployeeService;
+import com.AngularCURD.dto.EmployeeRequest;
+import com.AngularCURD.entity.Employee;
+import com.AngularCURD.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

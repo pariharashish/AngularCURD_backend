@@ -1,4 +1,4 @@
-package com.AngularCURD.DTO;
+package com.AngularCURD.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

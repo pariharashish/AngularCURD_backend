@@ -1,8 +1,8 @@
-package com.AngularCURD.Controller;
+package com.AngularCURD.controller;
 
-import com.AngularCURD.DTO.DepartmentRequest;
-import com.AngularCURD.Entity.Department;
-import com.AngularCURD.Service.DepartmentService;
+import com.AngularCURD.dto.DepartmentRequest;
+import com.AngularCURD.entity.Department;
+import com.AngularCURD.service.DepartmentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

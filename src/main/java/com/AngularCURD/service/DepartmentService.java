@@ -1,9 +1,9 @@
-package com.AngularCURD.Service;
+package com.AngularCURD.service;
 
-import com.AngularCURD.DTO.DepartmentRequest;
-import com.AngularCURD.Entity.Department;
-import com.AngularCURD.Entity.DepartmentType;
-import com.AngularCURD.Repository.DepartmentRepository;
+import com.AngularCURD.dto.DepartmentRequest;
+import com.AngularCURD.entity.Department;
+import com.AngularCURD.entity.DepartmentType;
+import com.AngularCURD.repository.DepartmentRepository;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;

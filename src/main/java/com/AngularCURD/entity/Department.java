@@ -1,4 +1,4 @@
-package com.AngularCURD.Entity;
+package com.AngularCURD.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

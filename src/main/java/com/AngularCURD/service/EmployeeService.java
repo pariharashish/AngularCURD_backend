@@ -1,13 +1,13 @@
 
-package com.AngularCURD.Service;
+package com.AngularCURD.service;
 
-import com.AngularCURD.DTO.EmployeeRequest;
-import com.AngularCURD.Entity.Department;
-import com.AngularCURD.Entity.DepartmentType;
-import com.AngularCURD.Entity.Employee;
-import com.AngularCURD.Repository.DepartmentRepository;
-import com.AngularCURD.Repository.DepartmentTypeRepository;
-import com.AngularCURD.Repository.EmployeeRepository;
+import com.AngularCURD.dto.EmployeeRequest;
+import com.AngularCURD.entity.Department;
+import com.AngularCURD.entity.DepartmentType;
+import com.AngularCURD.entity.Employee;
+import com.AngularCURD.repository.DepartmentRepository;
+import com.AngularCURD.repository.DepartmentTypeRepository;
+import com.AngularCURD.repository.EmployeeRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

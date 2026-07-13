@@ -1,6 +1,6 @@
 plugins {
 	java
-	id("org.springframework.boot") version "3.5.7"
+	id("org.springframework.boot") version "3.3.5"
 	id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -24,7 +24,7 @@ repositories {
 	mavenCentral()
 }
 
-extra["springCloudVersion"] = "2025.0.0"
+extra["springCloudVersion"] = "2023.0.3"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -34,7 +34,7 @@ dependencies {
 	implementation("org.springframework.kafka:spring-kafka")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 	runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly ("com.h2database:h2")
 	annotationProcessor("org.projectlombok:lombok")

@@ -4,8 +4,14 @@ import com.AngularCURD.dto.EmployeeRequest;
 import com.AngularCURD.entity.Employee;
 import com.AngularCURD.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,24 +28,61 @@ public class EmployeeController {
     }
 
     @GetMapping
-    @Operation(
-            summary = "Get All Employee details",
-            description = "Retrieves a  All Employee details")
-    public List<Employee> getAll() { return service.getAllEmployees(); }
+    @Operation(summary = "Get all employees", description = "Retrieves a list of all employees")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of employees",
+                    content = @Content(schema = @Schema(implementation = Employee.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<List<Employee>> getAll() {
+        return ResponseEntity.ok(service.getAllEmployees());
+    }
 
     @GetMapping("/{id}")
-    public Employee getById(@PathVariable Long id) { return service.getEmployeeById(id); }
+    @Operation(summary = "Get employee by ID", description = "Retrieves a specific employee by their ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Employee found",
+                    content = @Content(schema = @Schema(implementation = Employee.class))),
+            @ApiResponse(responseCode = "404", description = "Employee not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<Employee> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getEmployeeById(id));
+    }
 
     @PostMapping
-    public Employee create(@Valid @RequestBody EmployeeRequest e) { return service.createEmployee(e); }
+    @Operation(summary = "Create new employee", description = "Creates a new employee with the provided details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Employee created successfully",
+                    content = @Content(schema = @Schema(implementation = Employee.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<Employee> create(@Valid @RequestBody EmployeeRequest e) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createEmployee(e));
+    }
 
     @PatchMapping("/{id}")
-    public Employee update(@PathVariable Long id, @Valid @RequestBody EmployeeRequest e) {
-        return service.updateEmployeeById(id,e);
-        }
+    @Operation(summary = "Update employee", description = "Updates an existing employee's details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Employee updated successfully",
+                    content = @Content(schema = @Schema(implementation = Employee.class))),
+            @ApiResponse(responseCode = "404", description = "Employee not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<Employee> update(@PathVariable Long id, @Valid @RequestBody EmployeeRequest e) {
+        return ResponseEntity.ok(service.updateEmployeeById(id, e));
+    }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    @Operation(summary = "Delete employee", description = "Deletes an employee by their ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Employee deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Employee not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        return service.delete(id);
     }
 }

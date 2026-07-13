@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptions {
 
-    @ExceptionHandler
-    public ResponseEntity<String> EmployeeNotFound(CustomExceptions customExceptions){
-        return new ResponseEntity<>(customExceptions.getMessage(), HttpStatus.NOT_FOUND);
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CustomExceptions.class)
+    public ResponseEntity<String> handleCustomException(CustomExceptions ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

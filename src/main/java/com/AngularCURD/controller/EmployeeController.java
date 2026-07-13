@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200") // allow Angular
 @RestController
 @RequestMapping("/api/employees")
 @Tag(name = "Employee Management", description = "Operations related to user management")
@@ -30,18 +29,18 @@ public class EmployeeController {
     public List<Employee> getAll() { return service.getAllEmployees(); }
 
     @GetMapping("/{id}")
-    public Employee getById(@Valid @PathVariable Long id) { return service.getEmployeeById(id); }
+    public Employee getById(@PathVariable Long id) { return service.getEmployeeById(id); }
 
     @PostMapping
     public Employee create(@Valid @RequestBody EmployeeRequest e) { return service.createEmployee(e); }
 
     @PatchMapping("/{id}")
-    public Employee update(@Valid @PathVariable Long id, @RequestBody EmployeeRequest e) {
-        return service.updateEmployeeById(id,e); //
+    public Employee update(@PathVariable Long id, @Valid @RequestBody EmployeeRequest e) {
+        return service.updateEmployeeById(id,e);
         }
 
     @DeleteMapping("/{id}")
-    public void delete(@Valid @PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 }

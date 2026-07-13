@@ -8,6 +8,7 @@ import com.AngularCURD.entity.Employee;
 import com.AngularCURD.repository.DepartmentRepository;
 import com.AngularCURD.repository.DepartmentTypeRepository;
 import com.AngularCURD.repository.EmployeeRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,10 @@ public class EmployeeService {
 
     public List<Employee> getAllEmployees() { return repo.findAll(); }
 
-    public Employee getEmployeeById(Long id) { return repo.findById(id).orElse(null); }
+    public Employee getEmployeeById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
+    }
 
     public Employee createEmployee(EmployeeRequest request) {
         Employee emp = new Employee();
@@ -58,7 +62,7 @@ public class EmployeeService {
 
     public Employee updateEmployeeById(Long id, EmployeeRequest newEmp) {
         Employee emp = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
+                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
 
         // Update employee basic details
         if (newEmp.getName() != null) emp.setName(newEmp.getName());
@@ -76,16 +80,13 @@ public class EmployeeService {
             emp.setDepartmentId(dept);
         }
 
-        // Update Department Type if provided
-        if (newEmp.getDeptType() != null) {
-            departmentTypeRepository
+        // Update Department Type if provided - Fixed: Add null check for department
+        if (newEmp.getDeptType() != null && newEmp.getDepartment() != null) {
+            DepartmentType deptType = departmentTypeRepository
                     .findByTypeNameAndDepartment_DeptName(newEmp.getDeptType(), newEmp.getDepartment())
                     .orElseThrow(() -> new RuntimeException(
                             "Department type " + newEmp.getDeptType() +
                                     " not found under department " + newEmp.getDepartment() ));
-            DepartmentType deptType = departmentTypeRepository
-                    .findByTypeName(newEmp.getDeptType());
-
             emp.setDeptType(deptType);
         }
 
@@ -94,7 +95,8 @@ public class EmployeeService {
 
     public ResponseEntity<String> delete(Long id) {
         if (!repo.existsById(id)) {
-            return ResponseEntity.ok("Employee with ID " + id + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Employee with ID " + id + " not found.");
         }
         repo.deleteById(id);
         return ResponseEntity.ok("Employee with ID " + id + " has been deleted successfully.");

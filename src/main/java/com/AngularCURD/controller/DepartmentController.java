@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,8 @@ import java.util.List;
 @RequestMapping("/api/departments")
 @Tag(name = "Department Management", description = "API endpoints for managing departments")
 public class DepartmentController {
+    
+    private static final Logger logger = LoggerFactory.getLogger(DepartmentController.class);
 
     private final DepartmentService service;
 
@@ -35,6 +39,7 @@ public class DepartmentController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<List<Department>> getAllDepartmentList() {
+        logger.debug("GET /api/departments - Retrieving all departments");
         return ResponseEntity.ok(service.getAllDepartments());
     }
 
@@ -47,6 +52,7 @@ public class DepartmentController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<Department> createDepartment(@Valid @RequestBody DepartmentRequest d) {
+        logger.info("POST /api/departments - Creating new department");
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createDepartment(d));
     }
 
@@ -60,6 +66,7 @@ public class DepartmentController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<Department> updateDepartment(@PathVariable Long id, @RequestBody Department d) {
+        logger.info("PATCH /api/departments/{} - Updating department", id);
         return ResponseEntity.ok(service.updateDepartmentById(id, d));
     }
 }

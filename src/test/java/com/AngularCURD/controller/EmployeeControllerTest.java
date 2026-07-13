@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,11 +48,13 @@ class EmployeeControllerTest {
         List<Employee> employees = Arrays.asList(emp1, emp2);
         when(employeeService.getAllEmployees()).thenReturn(employees);
 
-        // Act
-        List<Employee> result = employeeController.getAll();
+        // Act - Fixed: Now expects ResponseEntity
+        ResponseEntity<List<Employee>> result = employeeController.getAll();
 
         // Assert
-        assertEquals(2, result.size());
+        assertNotNull(result);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals(2, result.getBody().size());
         verify(employeeService, times(1)).getAllEmployees();
     }
 
@@ -62,12 +66,13 @@ class EmployeeControllerTest {
         employee.setName("John Doe");
         when(employeeService.getEmployeeById(1L)).thenReturn(employee);
 
-        // Act
-        Employee result = employeeController.getById(1L);
+        // Act - Fixed: Now expects ResponseEntity
+        ResponseEntity<Employee> result = employeeController.getById(1L);
 
         // Assert
         assertNotNull(result);
-        assertEquals("John Doe", result.getName());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals("John Doe", result.getBody().getName());
         verify(employeeService, times(1)).getEmployeeById(1L);
     }
 
@@ -87,12 +92,13 @@ class EmployeeControllerTest {
 
         when(employeeService.createEmployee(any(EmployeeRequest.class))).thenReturn(createdEmployee);
 
-        // Act
-        Employee result = employeeController.create(request);
+        // Act - Fixed: Now expects ResponseEntity
+        ResponseEntity<Employee> result = employeeController.create(request);
 
         // Assert
         assertNotNull(result);
-        assertEquals("New Employee", result.getName());
+        assertEquals(HttpStatus.CREATED, result.getStatusCode());
+        assertEquals("New Employee", result.getBody().getName());
         verify(employeeService, times(1)).createEmployee(any(EmployeeRequest.class));
     }
 
@@ -109,19 +115,29 @@ class EmployeeControllerTest {
         when(employeeService.updateEmployeeById(anyLong(), any(EmployeeRequest.class)))
                 .thenReturn(updatedEmployee);
 
-        // Act
-        Employee result = employeeController.update(1L, updateRequest);
+        // Act - Fixed: Now expects ResponseEntity
+        ResponseEntity<Employee> result = employeeController.update(1L, updateRequest);
 
         // Assert
         assertNotNull(result);
-        assertEquals("Updated Employee", result.getName());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertEquals("Updated Employee", result.getBody().getName());
         verify(employeeService, times(1)).updateEmployeeById(1L, updateRequest);
     }
 
     @Test
     void testDeleteEmployee() {
-        // Act & Assert
-        assertDoesNotThrow(() -> employeeController.delete(1L));
+        // Arrange
+        ResponseEntity<String> deleteResponse = ResponseEntity.ok("Employee deleted successfully");
+        when(employeeService.delete(1L)).thenReturn(deleteResponse);
+
+        // Act - Fixed: Now expects ResponseEntity
+        ResponseEntity<String> result = employeeController.delete(1L);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertTrue(result.getBody().contains("deleted"));
         verify(employeeService, times(1)).delete(1L);
     }
 }

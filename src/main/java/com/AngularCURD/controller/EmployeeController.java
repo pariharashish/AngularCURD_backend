@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,8 @@ import java.util.List;
 @RequestMapping("/api/employees")
 @Tag(name = "Employee Management", description = "API endpoints for managing employees")
 public class EmployeeController {
+    
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
     private final EmployeeService service;
 
@@ -35,6 +39,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<List<Employee>> getAll() {
+        logger.debug("GET /api/employees - Retrieving all employees");
         return ResponseEntity.ok(service.getAllEmployees());
     }
 
@@ -47,6 +52,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<Employee> getById(@PathVariable Long id) {
+        logger.debug("GET /api/employees/{} - Retrieving employee", id);
         return ResponseEntity.ok(service.getEmployeeById(id));
     }
 
@@ -59,6 +65,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<Employee> create(@Valid @RequestBody EmployeeRequest e) {
+        logger.info("POST /api/employees - Creating new employee");
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createEmployee(e));
     }
 
@@ -72,6 +79,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<Employee> update(@PathVariable Long id, @Valid @RequestBody EmployeeRequest e) {
+        logger.info("PATCH /api/employees/{} - Updating employee", id);
         return ResponseEntity.ok(service.updateEmployeeById(id, e));
     }
 
@@ -83,6 +91,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<String> delete(@PathVariable Long id) {
+        logger.info("DELETE /api/employees/{} - Deleting employee", id);
         return service.delete(id);
     }
 }

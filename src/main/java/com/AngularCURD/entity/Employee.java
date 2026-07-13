@@ -14,7 +14,6 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
     private String name;
     private String email;
     private String gender;
@@ -23,7 +22,7 @@ public class Employee {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
     @JsonIgnore
-    private Department department_obj; // Fixed: Clearer naming - this is a Department object, not an ID
+    private Department departmentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_type_id")

@@ -16,6 +16,6 @@ public class EmployeeRequest {
     private String gender;
     @NotBlank(message = "department must not be blank")
     private String department;
-    @NotBlank(message = "deptType must not be blank")
+    // deptType is optional - removed @NotBlank annotation
     private String deptType;
 }

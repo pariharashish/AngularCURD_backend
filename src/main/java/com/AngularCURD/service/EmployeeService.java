@@ -36,8 +36,8 @@ public class EmployeeService {
 
     public Employee createEmployee(EmployeeRequest request) {
         Employee emp = new Employee();
-        // 1. Check if department exists
-        Department deptId = departmentRepository.findByDeptName(request.getDepartment())
+        // 1. Check if department exists - Fixed: Use clear variable naming
+        Department department = departmentRepository.findByDeptName(request.getDepartment())
                 .orElseThrow(() -> new RuntimeException("Department not found: " + request.getDepartment()));
 
         // 2️⃣ Validate DepartmentType exists under this Department
@@ -56,7 +56,7 @@ public class EmployeeService {
         emp.setGender(request.getGender());
         emp.setDepartment(request.getDepartment());
         emp.setDeptType(deptType);
-        emp.setDepartmentId(deptId); // set FK
+        emp.setDepartmentId(department); // set FK with clear naming
         return repo.save(emp);
     }
 
@@ -72,12 +72,12 @@ public class EmployeeService {
 
         // Update Department if provided
         if (newEmp.getDepartment() != null) {
-            Department dept = departmentRepository
+            Department department = departmentRepository
                     .findByDeptName(newEmp.getDepartment())
                     .orElseThrow(() ->
                             new RuntimeException("Department not found: " + newEmp.getDepartment()));
             emp.setDepartment(newEmp.getDepartment());
-            emp.setDepartmentId(dept);
+            emp.setDepartmentId(department);
         }
 
         // Update Department Type if provided - Fixed: Add null check for department

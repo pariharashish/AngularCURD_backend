@@ -43,7 +43,9 @@ public class DepartmentService {
 
 
     public Department updateDepartmentById(Long id, Department newDept) {
-        Department dpt = departmentRepository.findById(id).orElseThrow();
+        // Fixed: Added proper exception message
+        Department dpt = departmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Department not found with ID: " + id));
         if (newDept.getDeptName() != null) dpt.setDeptName(newDept.getDeptName());
         if (newDept.getDeptTypes() != null) dpt.setDeptTypes(newDept.getDeptTypes());
         return departmentRepository.save(dpt);

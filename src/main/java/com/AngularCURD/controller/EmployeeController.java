@@ -6,6 +6,7 @@ import com.AngularCURD.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +41,8 @@ public class EmployeeController {
         }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    // Fixed: Changed return type from void to ResponseEntity to properly return response
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        return service.delete(id);
     }
 }

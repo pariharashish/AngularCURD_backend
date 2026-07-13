@@ -82,11 +82,12 @@ class EmployeeServiceTest {
         request.setDeptType("Recruitment");
 
         Department department = new Department();
-        department.setId(1L);
+        department.setDeptId(1L);
         department.setDeptName("HR");
 
+        // Fixed: Use correct field names for DepartmentType entity
         DepartmentType deptType = new DepartmentType();
-        deptType.setId(1L);
+        deptType.setDeptTypeId(1L);
         deptType.setTypeName("Recruitment");
         deptType.setDepartment(department);
 
